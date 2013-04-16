@@ -12,13 +12,51 @@ int main(void)
 	return 0;
 }
 
+// prints 636,240 radial fuel rings
 void print_reactor( void )
 {
-	// need to define lattice.
-	// Assemblies are defined in terms of their distance from the center
-	print_assembly( 0.0, 0.0 );
+	int ct = 0;
+	double ll_x = -8 * 21.42;
+	double ll_y = -8 * 21.42;
+		
+	for( int x = 0; x < 17; x++ )
+	{	
+		for( int y = 0; y < 17; y++ )
+		{
+			int ok = 0;
+			
+			if( x == 0 || x == 16 )
+				if( y >= 5 && y <= 11 )
+					ok = 1;
+			
+			if( x == 1 || x == 15 )
+				if( y >= 3 && y <= 13 )
+					ok = 1;
+
+			if( x == 2 || x == 14 )
+				if( y >= 2 && y <= 14 )
+					ok = 1;
+
+			if( x == 3 || x == 4 || x == 13 || x == 12 )
+				if( y >= 1 && y <= 15 )
+					ok = 1;
+			
+			if( x >= 5 && x <= 11 )
+				ok = 1;
+
+			if( ok == 1 )
+			{
+				ct++;
+				print_assembly( ll_x + x * 21.42, ll_y + y * 21.42 );
+			}
+		}
+	}
+
+	printf("Printed %d Fuel Assemblies\n", ct);
+	printf("Printed %d Cells\n", ct * 2640);
 }
 
+// prints 2640 cells and surfaces
 void print_assembly( double c_x, double c_y )
 {
 	FILE * fp = fopen("test.xml", "a");
