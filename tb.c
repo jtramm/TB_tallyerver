@@ -1,14 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
-void print_assembly( int id, double c_x, double c_y );
+void print_assembly( double c_x, double c_y );
+void print_reactor( void );
+
+int id;
 
 int main(void)
 {
-	print_assembly( 1, 0.0, 0.0 );
+	id = 1;
+	print_reactor();
 	return 0;
 }
 
-void print_assembly( int id, double c_x, double c_y )
+void print_reactor( void )
+{
+	// need to define lattice.
+	// Assemblies are defined in terms of their distance from the center
+	print_assembly( 0.0, 0.0 );
+}
+
+void print_assembly( double c_x, double c_y )
 {
 	FILE * fp = fopen("test.xml", "a");
 	
@@ -36,8 +47,8 @@ void print_assembly( int id, double c_x, double c_y )
 
 			double x_coord, y_coord;
 
-			x_coord = x * 1.26 + c_x;
-			y_coord = y * 1.26 + c_y;
+			x_coord = c_x + ( x - 8 ) * 1.26;
+			y_coord = c_y + ( y - 8 ) * 1.26;
 			
 			int start_id = id;
 			
