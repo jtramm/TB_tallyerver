@@ -16,9 +16,9 @@ int id;
 int main(void)
 {
 	id = 100;
-	//print_geom_header();
-	//print_reactor();
-	//print_geom_footer();
+	print_geom_header();
+	print_reactor();
+	print_geom_footer();
 
 	print_tallies_header();
 	print_tallies();
@@ -31,7 +31,7 @@ void print_tallies( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
 	
-	for( int i = 100; i <= 636340; i++ )
+	for( int i = 100; i < 636340; i++ )
 	{	
 		if( i % 5 == 0 && i != 100 )
 			fprintf(fp, "\n");
