@@ -12,33 +12,58 @@ void print_tallies_footer( void );
 
 int id;
 
+// prints 636,240 radial fuel rings
 int main(void)
 {
-	id = 1;
-	print_geom_header();
-	print_reactor();
-	print_geom_footer();
+	id = 100;
+	//print_geom_header();
+	//print_reactor();
+	//print_geom_footer();
 
 	print_tallies_header();
+	print_tallies();
 	print_tallies_footer();
 
 	return 0;
+}
+
+void print_tallies( void )
+{
+	FILE * fp = fopen("tallies.xml", "a");
+	
+	for( int i = 100; i <= 636340; i++ )
+	{	
+		if( i % 5 == 0 && i != 100 )
+			fprintf(fp, "\n");
+		fprintf(fp, "%d ", i);
+	}
+	
+	fclose(fp);
 }
 
 void print_tallies_header( void )
 {
 	FILE * fp = fopen("tallies.xml", "w");
 	fprintf(fp,
-	"<?xml version=\"1.0\"?>\n"
-	"<tallies>\n"
-	);
+			"<?xml version=\"1.0\"?>\n"
+			"<tallies>\n"
+			"	<mesh id=\"1\">\n"
+			"<type>rectangular</type>\n"
+			"<lower_left>-182.07 -182.07 -183.00</lower_left>\n"
+			"<upper_right>182.07  182.07  183.00</upper_right>\n"
+			"<dimension>1 1 500</dimension>\n"
+			"</mesh>\n\n"
+			"<tally id=\"1\">\n"
+			"<filter type=\"mesh\" bins=\"1\" />\n"
+			"<filter type=\"cell\" bins=\"\n"
+		   );
 	fclose(fp);
 }
 
 void print_tallies_footer( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
-	fprintf(fp,"\n</tallies>");
+	fprintf(fp,"\"/>\n</tallies>");
 	fclose(fp);
 }
 
