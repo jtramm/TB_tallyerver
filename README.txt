@@ -79,3 +79,14 @@ Running XSBench---------------------------------------------------------------
 	>$ ./tb
 
 ==============================================================================
+Theoretical Basis
+==============================================================================
+
+This basis for this reactor model, including specifications for the
+geometry, material selection, and nuclide distribution, is specified in
+the Hoogenboom-Martin reactor model, as described in the paper below:
+
+J.E. Hoogenboom, W.R. Martin, B. Petrovic, “The Monte Carlo performance
+benchmark test aims, specifications and first results,” International
+Conference on Mathematics and Computational Methods Applied to Nuclear
+Science and Engineering, Rio de Janeiro, Brazil (2011).
