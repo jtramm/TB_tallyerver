@@ -63,7 +63,8 @@ void print_tallies_header( void )
 void print_tallies_footer( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
-	fprintf(fp,"\"/>\n</tallies>");
+	fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
+	fprintf(fp,"</tallies>");
 	fclose(fp);
 }
 
