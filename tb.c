@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define SHORT_GEOM  1
+#define SHORT_TALLY 1
 
 void print_assembly( double c_x, double c_y );
 void print_reactor( void );
@@ -31,12 +33,24 @@ void print_tallies( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
 	
-	for( int i = 100; i < 636340; i++ )
-	{	
-		if( i % 5 == 0 && i != 100 )
-			fprintf(fp, "\n");
-		fprintf(fp, "%d ", i);
-	}
+	if( SHORT_TALLY == 0 )
+		for( int i = 100; i < 636340; i++ )
+		{	
+			if( i % 5 == 0 && i != 100 )
+				fprintf(fp, "\n");
+			fprintf(fp, "%d ", i);
+		}
+	else
+		for( int i = 100; i < 2740; i++ )
+		{	
+			if( i % 5 == 0 && i != 100 )
+				fprintf(fp, "\n");
+			fprintf(fp, "%d ", i);
+		}
+	if( SHORT_TALLY == 0 )
+		printf("printed 636240 tallies.\n");
+	else
+		printf("printed 2640 tallies.\n");
 	
 	fclose(fp);
 }
@@ -273,6 +287,7 @@ void print_reactor( void )
 	int ct = 0;
 	double ll_x = -8 * 21.42;
 	double ll_y = -8 * 21.42;
+	int quit = 0;
 
 	for( int x = 0; x < 17; x++ )
 	{	
@@ -303,8 +318,13 @@ void print_reactor( void )
 			{
 				ct++;
 				print_assembly( ll_x + x * 21.42, ll_y + y * 21.42 );
+				quit = 1;
 			}
+			if( SHORT_GEOM == 1 && quit == 1 )
+				break;
 		}
+		if( SHORT_GEOM == 1 && quit == 1 )
+			break;
 	}
 
 	printf("Printed %d Fuel Assemblies\n", ct);
