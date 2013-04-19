@@ -34,6 +34,8 @@ void print_tallies_single( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
 	int tally = 1;
+	
+	
 	if( SHORT_TALLY == 0 )
 		for( int i = 100; i < 636340; i++ )
 		{	
@@ -41,7 +43,8 @@ void print_tallies_single( void )
 					"<tally id=\"%d\">\n"
 					"<filter type=\"mesh\" bins=\"1\" />\n"
 					"<filter type=\"cell\" bins=\"%d\"/>\n"
-					"<scores>nu-fission</scores>\n"
+					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
+					"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
 					"</tally>\n",
 					tally++,i
 					);
@@ -53,7 +56,8 @@ void print_tallies_single( void )
 					"<tally id=\"%d\">\n"
 					"<filter type=\"mesh\" bins=\"1\" />\n"
 					"<filter type=\"cell\" bins=\"%d\"/>\n"
-					"<scores>nu-fission</scores>\n"
+					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
+					"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
 					"</tally>\n",
 					tally++,i
 					);
