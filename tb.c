@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SHORT_GEOM  1
-#define SHORT_TALLY 1
+#define SHORT_GEOM  0
+#define SHORT_TALLY 0
 
 void print_assembly( double c_x, double c_y );
 void print_reactor( void );
