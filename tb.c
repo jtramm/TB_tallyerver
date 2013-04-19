@@ -9,7 +9,8 @@ void print_geom_header( void );
 void print_geom_footer( void );
 
 void print_tallies_header( void );
-void print_tallies( void );
+void print_tallies_multiline( void );
+void print_tallies_single( void );
 void print_tallies_footer( void );
 
 int id;
@@ -23,16 +24,58 @@ int main(void)
 	print_geom_footer();
 
 	print_tallies_header();
-	print_tallies();
+	print_tallies_single();
 	print_tallies_footer();
 
 	return 0;
 }
 
-void print_tallies( void )
+void print_tallies_single( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
+	int tally = 1;
+	if( SHORT_TALLY == 0 )
+		for( int i = 100; i < 636340; i++ )
+		{	
+			fprintf(fp,		
+					"<tally id=\"%d\">\n"
+					"<filter type=\"mesh\" bins=\"1\" />\n"
+					"<filter type=\"cell\" bins=\"%d\"/>\n"
+					"<scores>nu-fission</scores>\n"
+					"</tally>\n",
+					tally++,i
+					);
+		}
+	else
+		for( int i = 100; i < 2740; i++ )
+		{	
+			fprintf(fp,		
+					"<tally id=\"%d\">\n"
+					"<filter type=\"mesh\" bins=\"1\" />\n"
+					"<filter type=\"cell\" bins=\"%d\"/>\n"
+					"<scores>nu-fission</scores>\n"
+					"</tally>\n",
+					tally++,i
+					);
+		}
 	
+	
+	fclose(fp);
+	
+	if( SHORT_TALLY == 0 )
+		printf("printed 636240 tallies.\n");
+	else
+		printf("printed 2640 tallies.\n");
+}	
+
+void print_tallies_multiline( void )
+{
+	FILE * fp = fopen("tallies.xml", "a");
+	fprintf(fp,		
+			"<tally id=\"1\">\n"
+			"<filter type=\"mesh\" bins=\"1\" />\n"
+			"<filter type=\"cell\" bins=\"\n"
+			);
 	if( SHORT_TALLY == 0 )
 		for( int i = 100; i < 636340; i++ )
 		{	
@@ -47,12 +90,17 @@ void print_tallies( void )
 				fprintf(fp, "\n");
 			fprintf(fp, "%d ", i);
 		}
+	
+	fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
+	fprintf(fp,"</tally>\n");
+	
+	fclose(fp);
+	
 	if( SHORT_TALLY == 0 )
 		printf("printed 636240 tallies.\n");
 	else
 		printf("printed 2640 tallies.\n");
 	
-	fclose(fp);
 }
 
 void print_tallies_header( void )
@@ -67,9 +115,6 @@ void print_tallies_header( void )
 			"<upper_right>182.07  182.07  183.00</upper_right>\n"
 			"<dimension>1 1 500</dimension>\n"
 			"</mesh>\n\n"
-			"<tally id=\"1\">\n"
-			"<filter type=\"mesh\" bins=\"1\" />\n"
-			"<filter type=\"cell\" bins=\"\n"
 		   );
 	fclose(fp);
 }
@@ -77,8 +122,6 @@ void print_tallies_header( void )
 void print_tallies_footer( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
-	fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
-	fprintf(fp,"</tally>\n");
 	fprintf(fp,"</tallies>");
 	fclose(fp);
 }
