@@ -117,7 +117,7 @@ void print_tallies_header( void )
 			"<type>rectangular</type>\n"
 			"<lower_left>-182.07 -182.07 -183.00</lower_left>\n"
 			"<upper_right>182.07  182.07  183.00</upper_right>\n"
-			"<dimension>1 1 500</dimension>\n"
+			"<dimension>1 1 100</dimension>\n"
 			"</mesh>\n\n"
 		   );
 	fclose(fp);
