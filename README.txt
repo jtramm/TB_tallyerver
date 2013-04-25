@@ -78,6 +78,14 @@ Running XSBench---------------------------------------------------------------
 
 	>$ ./tb
 
+	The program is also capable of generating a smaller model, representing
+	only a single fuel assembley. This results in a much smaller input deck,
+	along with accelerated runtime, which some may find useful for testing
+	purposes. This option can be triggered by passing in "small" as the
+	command line argument:
+
+	>$ ./tb small
+
 ==============================================================================
 Theoretical Basis
 ==============================================================================

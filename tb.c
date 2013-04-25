@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SHORT_GEOM  0
-#define SHORT_TALLY 0
+#include <string.h>
 
 void print_assembly( double c_x, double c_y );
 void print_reactor( void );
@@ -15,14 +14,33 @@ void print_tallies_footer( void );
 
 int id;
 
+int SHORT_GEOM;
+int SHORT_TALLY;
+
 // prints 636,240 radial fuel rings
-int main(void)
+int main(int argc, char * argv[])
 {
+	// reads in command line option to only print 1 assembly, rather
+	// than the full reactor
+	if( argc == 2 && strcmp(argv[1], "small") == 0 )
+	{	
+		SHORT_GEOM = 1;
+		SHORT_TALLY = 1;
+	}
+	else
+	{	
+		SHORT_GEOM = 0;
+		SHORT_TALLY = 0;
+	}
+
 	id = 100;
+
+	// Generates geometry.xml input file
 	print_geom_header();
 	print_reactor();
 	print_geom_footer();
 
+	// Generates tallies.xml input file
 	print_tallies_header();
 	print_tallies_single();
 	print_tallies_footer();
@@ -72,6 +90,9 @@ void print_tallies_single( void )
 		printf("printed 2640 tallies.\n");
 }	
 
+// This method was originally suggested to save space in the input file,
+// but was found not to actually work with the current XML reader. The
+// XML reader is only capable of reading ~50 bins in a single filter.
 void print_tallies_multiline( void )
 {
 	FILE * fp = fopen("tallies.xml", "a");
