@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 void print_assembly( double c_x, double c_y );
 void print_reactor( void );
@@ -13,25 +12,22 @@ void print_tallies_single( void );
 void print_tallies_footer( void );
 
 int id;
+int n_assemblies;
 
-int SHORT_GEOM;
-int SHORT_TALLY;
-
-// prints 636,240 radial fuel rings
 int main(int argc, char * argv[])
 {
-	// reads in command line option to only print 1 assembly, rather
-	// than the full reactor
-	if( argc == 2 && strcmp(argv[1], "small") == 0 )
-	{	
-		SHORT_GEOM = 1;
-		SHORT_TALLY = 1;
+	// Reads in the number of assemblies to print
+	// Max is 241 (i.e., H-M model size)
+	if( argc == 2 )
+	{
+		n_assemblies = atoi( argv[1] );
+		if( n_assemblies < 1 )
+			n_assemblies = 1;
+		if( n_assemblies > 241 )
+			n_assemblies = 241;
 	}
 	else
-	{	
-		SHORT_GEOM = 0;
-		SHORT_TALLY = 0;
-	}
+		n_assemblies = 241;
 
 	id = 100;
 
@@ -53,84 +49,27 @@ void print_tallies_single( void )
 	FILE * fp = fopen("tallies.xml", "a");
 	int tally = 1;
 	
-	
-	if( SHORT_TALLY == 0 )
-		for( int i = 100; i < 636340; i++ )
-		{	
-			fprintf(fp,		
-					"<tally id=\"%d\">\n"
-					"<filter type=\"mesh\" bins=\"1\" />\n"
-					"<filter type=\"cell\" bins=\"%d\"/>\n"
-					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
-					"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
-					"</tally>\n",
-					tally++,i
-					);
-		}
-	else
-		for( int i = 100; i < 2740; i++ )
-		{	
-			fprintf(fp,		
-					"<tally id=\"%d\">\n"
-					"<filter type=\"mesh\" bins=\"1\" />\n"
-					"<filter type=\"cell\" bins=\"%d\"/>\n"
-					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
-					"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
-					"</tally>\n",
-					tally++,i
-					);
-		}
-	
+	for( int i = 100; i < 100 + 2640 * n_assemblies; i++ )
+	{	
+		fprintf(fp,		
+				"<tally id=\"%d\">\n"
+				"<filter type=\"mesh\" bins=\"1\" />\n"
+				"<filter type=\"cell\" bins=\"%d\"/>\n"
+				"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
+				"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
+				"</tally>\n",
+				tally++,i
+				);
+	}
 	
 	fclose(fp);
 	
-	if( SHORT_TALLY == 0 )
-		printf("printed 636240 tallies.\n");
-	else
-		printf("printed 2640 tallies.\n");
+	printf("printed %d tallies.\n", 2640 * n_assemblies);
 }	
-
-// This method was originally suggested to save space in the input file,
-// but was found not to actually work with the current XML reader. The
-// XML reader is only capable of reading ~50 bins in a single filter.
-void print_tallies_multiline( void )
-{
-	FILE * fp = fopen("tallies.xml", "a");
-	fprintf(fp,		
-			"<tally id=\"1\">\n"
-			"<filter type=\"mesh\" bins=\"1\" />\n"
-			"<filter type=\"cell\" bins=\"\n"
-			);
-	if( SHORT_TALLY == 0 )
-		for( int i = 100; i < 636340; i++ )
-		{	
-			if( i % 5 == 0 && i != 100 )
-				fprintf(fp, "\n");
-			fprintf(fp, "%d ", i);
-		}
-	else
-		for( int i = 100; i < 2740; i++ )
-		{	
-			if( i % 5 == 0 && i != 100 )
-				fprintf(fp, "\n");
-			fprintf(fp, "%d ", i);
-		}
-	
-	fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
-	fprintf(fp,"</tally>\n");
-	
-	fclose(fp);
-	
-	if( SHORT_TALLY == 0 )
-		printf("printed 636240 tallies.\n");
-	else
-		printf("printed 2640 tallies.\n");
-	
-}
 
 void print_tallies_header( void )
 {
-	FILE * fp = fopen("tallies.xml", "w");
+	FILE * fp = fopen("tallies.xml", "w+");
 	fprintf(fp,
 			"<?xml version=\"1.0\"?>\n"
 			"<tallies>\n"
@@ -160,7 +99,7 @@ void print_geom_footer( void )
 
 void print_geom_header( void )
 {
-	FILE * fp = fopen("geometry.xml", "w");
+	FILE * fp = fopen("geometry.xml", "w+");
 	fprintf(fp,
 			"<?xml version=\"1.0\"?>\n"
 			"<geometry>\n"
@@ -353,10 +292,9 @@ void print_geom_header( void )
 // prints 636,240 radial fuel rings
 void print_reactor( void )
 {
-	int ct = 0;
 	double ll_x = -8 * 21.42;
 	double ll_y = -8 * 21.42;
-	int quit = 0;
+	int assemblies_printed = 0;
 
 	for( int x = 0; x < 17; x++ )
 	{	
@@ -385,19 +323,20 @@ void print_reactor( void )
 
 			if( ok == 1 )
 			{
-				ct++;
 				print_assembly( ll_x + x * 21.42, ll_y + y * 21.42 );
-				quit = 1;
+				assemblies_printed++;
 			}
-			if( SHORT_GEOM == 1 && quit == 1 )
+			
+			if( assemblies_printed == n_assemblies )
 				break;
 		}
-		if( SHORT_GEOM == 1 && quit == 1 )
+		
+		if( assemblies_printed == n_assemblies )
 			break;
 	}
 
-	printf("Printed %d Fuel Assemblies\n", ct);
-	printf("Printed %d Cells\n", ct * 2640);
+	printf("Printed %d Fuel Assemblies\n", assemblies_printed);
+	printf("Printed %d Cells\n", assemblies_printed * 2640);
 }
 
 // prints 2640 cells and surfaces
@@ -457,3 +396,44 @@ void print_assembly( double c_x, double c_y )
 
 	fclose(fp);
 }
+
+// This method was originally suggested to save space in the input file,
+// but was found not to actually work with the current XML reader. The
+// XML reader is only capable of reading ~50 bins in a single filter.
+
+/*
+void print_tallies_multiline( void )
+{
+	FILE * fp = fopen("tallies.xml", "a");
+	fprintf(fp,		
+			"<tally id=\"1\">\n"
+			"<filter type=\"mesh\" bins=\"1\" />\n"
+			"<filter type=\"cell\" bins=\"\n"
+			);
+	if( SHORT_TALLY == 0 )
+		for( int i = 100; i < 636340; i++ )
+		{	
+			if( i % 5 == 0 && i != 100 )
+				fprintf(fp, "\n");
+			fprintf(fp, "%d ", i);
+		}
+	else
+		for( int i = 100; i < 2740; i++ )
+		{	
+			if( i % 5 == 0 && i != 100 )
+				fprintf(fp, "\n");
+			fprintf(fp, "%d ", i);
+		}
+	
+	fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
+	fprintf(fp,"</tally>\n");
+	
+	fclose(fp);
+	
+	if( SHORT_TALLY == 0 )
+		printf("printed 636240 tallies.\n");
+	else
+		printf("printed 2640 tallies.\n");
+	
+}
+*/

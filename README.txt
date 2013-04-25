@@ -78,13 +78,15 @@ Running XSBench---------------------------------------------------------------
 
 	>$ ./tb
 
-	The program is also capable of generating a smaller model, representing
-	only a single fuel assembley. This results in a much smaller input deck,
-	along with accelerated runtime, which some may find useful for testing
-	purposes. This option can be triggered by passing in "small" as the
-	command line argument:
+	This program is also capabale of generating smaller models, representing
+	a smaller portion of the total number of fuel assemblies in the reactor.
+	This feature may be useful for testing purposes. Pass in as a command
+	line argument the desired number of fuel assemblies to print. i.e.,:
 
-	>$ ./tb small
+	>$ ./tb 1
+
+	Note that the program will enforce the number of assemblies to be
+	between 1 and 241. I.e., 1 <= n_assemblies <= 241
 
 ==============================================================================
 Theoretical Basis
