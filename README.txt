@@ -46,7 +46,7 @@ calculated as:
 
 	Tally Data = 63,624,000 tallies x 32 bytes/tally x 33 nucs x 6 XS's
 	           = 375.4 GB
-			   = 0.37 TB
+	           = 0.37  TB
 
 ==============================================================================
 Quick Start Guide
