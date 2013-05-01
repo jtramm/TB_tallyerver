@@ -704,9 +704,6 @@ subroutine read_xml_file_geometry_t(fname, lurep, errout)
    jrt_surf_size = 0
    ! this is our troubled loop
    do
-		if( MOD(surf_ctr + cell_ctr, 5000 ) == 0 ) then
-			write(6,*)"Total surfaces and cells read in  = ", surf_ctr+cell_ctr
-		endif
 
 		!if( surf_ctr + cell_ctr == 50000 ) then
 			!call EXIT(0)

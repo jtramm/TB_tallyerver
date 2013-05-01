@@ -678,9 +678,6 @@ subroutine read_xml_file_tallies_t(fname, lurep, errout)
    strict_ = .false.
    error = .false.
    do
-		if( MOD(ctr, 5000 ) == 0 ) then
-			write(6,*)"Total tallies read in  = ", ctr
-		endif
       call xml_get( info, tag, endtag, attribs, noattribs, data, nodata )
       if ( xml_error(info) ) then
          write(lurep_,*) 'Error reading input file!'
