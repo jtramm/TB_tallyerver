@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void print_assembly( double c_x, double c_y );
 void print_reactor( void );
@@ -8,7 +9,7 @@ void print_geom_footer( void );
 
 void print_tallies_header( void );
 void print_tallies_multiline( void );
-void print_tallies_single( void );
+void print_tallies_single( int );
 void print_tallies_footer( void );
 
 int id;
@@ -16,6 +17,7 @@ int n_assemblies;
 
 int main(int argc, char * argv[])
 {
+	int Large = 0;
 	// Reads in the number of assemblies to print
 	// Max is 241 (i.e., H-M model size)
 	if( argc == 2 )
@@ -25,6 +27,18 @@ int main(int argc, char * argv[])
 			n_assemblies = 1;
 		if( n_assemblies > 241 )
 			n_assemblies = 241;
+	}
+	else if( argc == 3 )
+	{
+		n_assemblies = atoi( argv[1] );
+		
+		if( n_assemblies < 1 )
+			n_assemblies = 1;
+		if( n_assemblies > 241 )
+			n_assemblies = 241;
+		
+		if( strcmp( "large", argv[2] ) == 0 || strcmp( "Large", argv[2] ) == 0 )
+			Large = 1;
 	}
 	else
 		n_assemblies = 241;
@@ -38,28 +52,46 @@ int main(int argc, char * argv[])
 
 	// Generates tallies.xml input file
 	print_tallies_header();
-	print_tallies_single();
+	print_tallies_single(Large);
 	print_tallies_footer();
+
+	if( Large == 0 )
+		printf("H-M Small Benchmark\n");
+	else
+		printf("H-M Large Benchmark\n");
 
 	return 0;
 }
 
-void print_tallies_single( void )
+void print_tallies_single( int Large )
 {
 	FILE * fp = fopen("tallies.xml", "a");
 	int tally = 1;
 	
 	for( int i = 100; i < 100 + 2640 * n_assemblies; i++ )
 	{	
-		fprintf(fp,		
-				"<tally id=\"%d\">\n"
-				"<filter type=\"mesh\" bins=\"1\" />\n"
-				"<filter type=\"cell\" bins=\"%d\"/>\n"
-				"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
-				"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
-				"</tally>\n",
-				tally++,i
-				);
+		// H-M Small model (33 fuel nuclides)
+		if( Large == 0 )
+			fprintf(fp,		
+					"<tally id=\"%d\">\n"
+					"<filter type=\"mesh\" bins=\"1\" />\n"
+					"<filter type=\"cell\" bins=\"%d\"/>\n"
+					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
+					"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
+					"</tally>\n",
+					tally++,i
+					);
+		// H-M Large Model (321 fuel nuclides)
+		else
+			fprintf(fp,		
+					"<tally id=\"%d\">\n"
+					"<filter type=\"mesh\" bins=\"1\" />\n"
+					"<filter type=\"cell\" bins=\"%d\"/>\n"
+					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
+					"<nuclides>U-234 U-235 U-236 U-238 O-16 Th-227 Th-228 Th-229 Th-230 Th-232 Th-233 Th-234 Pa-231 Pa-232 Pa-233 U-232 U-233 U-237 U-239 U-240 U-241 Np-235 Np-236 Np-237 Np-238 Np-239 Pu-236 Pu-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Pu-243 Pu-244 Pu-246 Am-241 Am-242 Am-242m Am-243 Am-244 Am-244m Cm-241 Cm-242 Cm-243 Cm-244 Cm-245 Cm-246 Cm-247 Cm-248 Cm-249 Cm-250 Bk-249 Bk-250 Cf-249 Cf-250 Cf-251 Cf-252 Cf-254 Es-254 Es-255 Fm-255 S-32 S-33 S-34 S-36 Cl-35 Cl-37 K-39 K-40 K-41 Ca-40 Ca-42 Ca-43 Ca-44 Ca-46 Ca-48 Sc-45 Ti-46 Ti-47 Ti-48 Ti-49 Ti-50 V-Nat Co-59 Zn-Nat Ga-69 Ga-71 Ge-70 Ge-72 Ge-73 Ge-74 Ge-76 As-74 As-75 Se-74 Se-76 Se-77 Se-78 Se-79 Se-80 Se-82 Br-79 Br-81 Kr-78 Kr-80 Kr-82 Kr-83 Kr-84 Kr-85 Kr-86 Rb-85 Rb-86 Rb-87 Sr-84 Sr-86 Sr-87 Sr-88 Sr-89 Sr-90 Y-89 Y-90 Y-91 Zr-93 Zr-95 Nb-93 Nb-94 Nb-95 Mo-99 Tc-99 Ru-96 Ru-98 Ru-99 Ru-100 Ru-101 Ru-102 Ru-103 Ru-104 Ru-105 Ru-106 Rh-103 Rh-105 Pd-102 Pd-104 Pd-105 Pd-106 Pd-107 Pd-108 Pd-110 Ag-107 Ag-109 Ag-110m Ag-111 Cd-106 Cd-108 Cd-110 Cd-111 Cd-112 Cd-113 Cd-114 Cd-115m Cd-116 In-113 In-115 Sn-112 Sn-113 Sn-114 Sn-115 Sn-116 Sn-117 Sn-118 Sn-119 Sn-120 Sn-122 Sn-123 Sn-124 Sn-125 Sn-126 Sb-121 Sb-123 Sb-124 Sb-125 Sb-126 Te-122 Te-123 Te-124 Te-125 Te-126 Te-127m Te-128 Te-129m Te-130 Te-132 I-127 I-129 I-130 I-131 I-135 Xe-123 Xe-124 Xe-126 Xe-128 Xe-129 Xe-130 Xe-131 Xe-132 Xe-133 Xe-134 Xe-135 Xe-136 Cs-133 Cs-134 Cs-135 Cs-136 Cs-137 Ba-130 Ba-132 Ba-133 Ba-134 Ba-135 Ba-136 Ba-137 Ba-138 Ba-140 La-138 La-139 La-140 Ce-136 Ce-138 Ce-139 Ce-140 Ce-141 Ce-142 Ce-143 Ce-144 Pr-141 Pr-142 Pr-143 Nd-142 Nd-143 Nd-144 Nd-145 Nd-146 Nd-147 Nd-148 Nd-150 Pm-147 Pm-148 Pm-148m Pm-149 Pm-151 Sm-147 Sm-148 Sm-149 Sm-150 Sm-151 Sm-152 Sm-153 Sm-154 Eu-151 Eu-152 Eu-153 Eu-154 Eu-155 Eu-156 Eu-157 Gd-152 Gd-153 Gd-154 Gd-155 Gd-156 Gd-157 Gd-158 Gd-160 Tb-159 Tb-160 Dy-156 Dy-158 Dy-160 Dy-161 Dy-162 Dy-163 Dy-164 Ho-165 Ho-166m Er-162 Er-164 Er-166 Er-167 Er-168 Er-170 Lu-175 Lu-176 Hf-174 Hf-176 Hf-177 Hf-178 Hf-179 Hf-180 Ta-181 Ta-182 W-182 W-183 W-184 W-186 Re-185 Re-187 Ir-191 Ir-193 Au-197 Hg-196 Hg-198 Hg-199 Hg-200 Hg-201 Hg-202 Hg-204 Pb-204 Pb-206 Pb-207 Pb-208</nuclides>\n"
+					"</tally>\n",
+					tally++,i
+					);
 	}
 	
 	fclose(fp);
