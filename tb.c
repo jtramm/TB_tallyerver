@@ -9,7 +9,7 @@ void print_geom_footer( void );
 
 void print_tallies_header( void );
 void print_tallies_multiline( void );
-void print_tallies_single( int );
+void print_tallies_single( int, char ** );
 void print_tallies_footer( void );
 
 int id;
@@ -17,6 +17,329 @@ int n_assemblies;
 
 int main(int argc, char * argv[])
 {
+	char * str[320];
+	str[0] = "U-234";
+	str[1] = "U-235";
+	str[2] = "U-236";
+	str[3] = "U-238";
+	str[4] = "O-16";
+	str[5] = "Th-227";
+	str[6] = "Th-228";
+	str[7] = "Th-229";
+	str[8] = "Th-230";
+	str[9] = "Th-232";
+	str[10] = "Th-233";
+	str[11] = "Th-234";
+	str[12] = "Pa-231";
+	str[13] = "Pa-232";
+	str[14] = "Pa-233";
+	str[15] = "U-232";
+	str[16] = "U-233";
+	str[17] = "U-237";
+	str[18] = "U-239";
+	str[19] = "U-240";
+	str[20] = "U-241";
+	str[21] = "Np-235";
+	str[22] = "Np-236";
+	str[23] = "Np-237";
+	str[24] = "Np-238";
+	str[25] = "Np-239";
+	str[26] = "Pu-236";
+	str[27] = "Pu-237";
+	str[28] = "Pu-238";
+	str[29] = "Pu-239";
+	str[30] = "Pu-240";
+	str[31] = "Pu-241";
+	str[32] = "Pu-242";
+	str[33] = "Pu-243";
+	str[34] = "Pu-244";
+	str[35] = "Pu-246";
+	str[36] = "Am-241";
+	str[37] = "Am-242";
+	str[38] = "Am-242m";
+	str[39] = "Am-243";
+	str[40] = "Am-244";
+	str[41] = "Am-244m";
+	str[42] = "Cm-241";
+	str[43] = "Cm-242";
+	str[44] = "Cm-243";
+	str[45] = "Cm-244";
+	str[46] = "Cm-245";
+	str[47] = "Cm-246";
+	str[48] = "Cm-247";
+	str[49] = "Cm-248";
+	str[50] = "Cm-249";
+	str[51] = "Cm-250";
+	str[52] = "Bk-249";
+	str[53] = "Bk-250";
+	str[54] = "Cf-249";
+	str[55] = "Cf-250";
+	str[56] = "Cf-251";
+	str[57] = "Cf-252";
+	str[58] = "Cf-254";
+	str[59] = "Es-254";
+	str[60] = "Es-255";
+	str[61] = "Fm-255";
+	str[62] = "S-32";
+	str[63] = "S-33";
+	str[64] = "S-34";
+	str[65] = "S-36";
+	str[66] = "Cl-35";
+	str[67] = "Cl-37";
+	str[68] = "K-39";
+	str[69] = "K-40";
+	str[70] = "K-41";
+	str[71] = "Ca-40";
+	str[72] = "Ca-42";
+	str[73] = "Ca-43";
+	str[74] = "Ca-44";
+	str[75] = "Ca-46";
+	str[76] = "Ca-48";
+	str[77] = "Sc-45";
+	str[78] = "Ti-46";
+	str[79] = "Ti-47";
+	str[80] = "Ti-48";
+	str[81] = "Ti-49";
+	str[82] = "Ti-50";
+	str[83] = "V-Nat";
+	str[84] = "Co-59";
+	str[85] = "Zn-Nat";
+	str[86] = "Ga-69";
+	str[87] = "Ga-71";
+	str[88] = "Ge-70";
+	str[89] = "Ge-72";
+	str[90] = "Ge-73";
+	str[91] = "Ge-74";
+	str[92] = "Ge-76";
+	str[93] = "As-74";
+	str[94] = "As-75";
+	str[95] = "Se-74";
+	str[96] = "Se-76";
+	str[97] = "Se-77";
+	str[98] = "Se-78";
+	str[99] = "Se-79";
+	str[100] = "Se-80";
+	str[101] = "Se-82";
+	str[102] = "Br-79";
+	str[103] = "Br-81";
+	str[104] = "Kr-78";
+	str[105] = "Kr-80";
+	str[106] = "Kr-82";
+	str[107] = "Kr-83";
+	str[108] = "Kr-84";
+	str[109] = "Kr-85";
+	str[110] = "Kr-86";
+	str[111] = "Rb-85";
+	str[112] = "Rb-86";
+	str[113] = "Rb-87";
+	str[114] = "Sr-84";
+	str[115] = "Sr-86";
+	str[116] = "Sr-87";
+	str[117] = "Sr-88";
+	str[118] = "Sr-89";
+	str[119] = "Sr-90";
+	str[120] = "Y-89";
+	str[121] = "Y-90";
+	str[122] = "Y-91";
+	str[123] = "Zr-93";
+	str[124] = "Zr-95";
+	str[125] = "Nb-93";
+	str[126] = "Nb-94";
+	str[127] = "Nb-95";
+	str[128] = "Mo-99";
+	str[129] = "Tc-99";
+	str[130] = "Ru-96";
+	str[131] = "Ru-98";
+	str[132] = "Ru-99";
+	str[133] = "Ru-100";
+	str[134] = "Ru-101";
+	str[135] = "Ru-102";
+	str[136] = "Ru-103";
+	str[137] = "Ru-104";
+	str[138] = "Ru-105";
+	str[139] = "Ru-106";
+	str[140] = "Rh-103";
+	str[141] = "Rh-105";
+	str[142] = "Pd-102";
+	str[143] = "Pd-104";
+	str[144] = "Pd-105";
+	str[145] = "Pd-106";
+	str[146] = "Pd-107";
+	str[147] = "Pd-108";
+	str[148] = "Pd-110";
+	str[149] = "Ag-107";
+	str[150] = "Ag-109";
+	str[151] = "Ag-110m";
+	str[152] = "Ag-111";
+	str[153] = "Cd-106";
+	str[154] = "Cd-108";
+	str[155] = "Cd-110";
+	str[156] = "Cd-111";
+	str[157] = "Cd-112";
+	str[158] = "Cd-113";
+	str[159] = "Cd-114";
+	str[160] = "Cd-115m";
+	str[161] = "Cd-116";
+	str[162] = "In-113";
+	str[163] = "In-115";
+	str[164] = "Sn-112";
+	str[165] = "Sn-113";
+	str[166] = "Sn-114";
+	str[167] = "Sn-115";
+	str[168] = "Sn-116";
+	str[169] = "Sn-117";
+	str[170] = "Sn-118";
+	str[171] = "Sn-119";
+	str[172] = "Sn-120";
+	str[173] = "Sn-122";
+	str[174] = "Sn-123";
+	str[175] = "Sn-124";
+	str[176] = "Sn-125";
+	str[177] = "Sn-126";
+	str[178] = "Sb-121";
+	str[179] = "Sb-123";
+	str[180] = "Sb-124";
+	str[181] = "Sb-125";
+	str[182] = "Sb-126";
+	str[183] = "Te-122";
+	str[184] = "Te-123";
+	str[185] = "Te-124";
+	str[186] = "Te-125";
+	str[187] = "Te-126";
+	str[188] = "Te-127m";
+	str[189] = "Te-128";
+	str[190] = "Te-129m";
+	str[191] = "Te-130";
+	str[192] = "Te-132";
+	str[193] = "I-127";
+	str[194] = "I-129";
+	str[195] = "I-130";
+	str[196] = "I-131";
+	str[197] = "I-135";
+	str[198] = "Xe-123";
+	str[199] = "Xe-124";
+	str[200] = "Xe-126";
+	str[201] = "Xe-128";
+	str[202] = "Xe-129";
+	str[203] = "Xe-130";
+	str[204] = "Xe-131";
+	str[205] = "Xe-132";
+	str[206] = "Xe-133";
+	str[207] = "Xe-134";
+	str[208] = "Xe-135";
+	str[209] = "Xe-136";
+	str[210] = "Cs-133";
+	str[211] = "Cs-134";
+	str[212] = "Cs-135";
+	str[213] = "Cs-136";
+	str[214] = "Cs-137";
+	str[215] = "Ba-130";
+	str[216] = "Ba-132";
+	str[217] = "Ba-133";
+	str[218] = "Ba-134";
+	str[219] = "Ba-135";
+	str[220] = "Ba-136";
+	str[221] = "Ba-137";
+	str[222] = "Ba-138";
+	str[223] = "Ba-140";
+	str[224] = "La-138";
+	str[225] = "La-139";
+	str[226] = "La-140";
+	str[227] = "Ce-136";
+	str[228] = "Ce-138";
+	str[229] = "Ce-139";
+	str[230] = "Ce-140";
+	str[231] = "Ce-141";
+	str[232] = "Ce-142";
+	str[233] = "Ce-143";
+	str[234] = "Ce-144";
+	str[235] = "Pr-141";
+	str[236] = "Pr-142";
+	str[237] = "Pr-143";
+	str[238] = "Nd-142";
+	str[239] = "Nd-143";
+	str[240] = "Nd-144";
+	str[241] = "Nd-145";
+	str[242] = "Nd-146";
+	str[243] = "Nd-147";
+	str[244] = "Nd-148";
+	str[245] = "Nd-150";
+	str[246] = "Pm-147";
+	str[247] = "Pm-148";
+	str[248] = "Pm-148m";
+	str[249] = "Pm-149";
+	str[250] = "Pm-151";
+	str[251] = "Sm-147";
+	str[252] = "Sm-148";
+	str[253] = "Sm-149";
+	str[254] = "Sm-150";
+	str[255] = "Sm-151";
+	str[256] = "Sm-152";
+	str[257] = "Sm-153";
+	str[258] = "Sm-154";
+	str[259] = "Eu-151";
+	str[260] = "Eu-152";
+	str[261] = "Eu-153";
+	str[262] = "Eu-154";
+	str[263] = "Eu-155";
+	str[264] = "Eu-156";
+	str[265] = "Eu-157";
+	str[266] = "Gd-152";
+	str[267] = "Gd-153";
+	str[268] = "Gd-154";
+	str[269] = "Gd-155";
+	str[270] = "Gd-156";
+	str[271] = "Gd-157";
+	str[272] = "Gd-158";
+	str[273] = "Gd-160";
+	str[274] = "Tb-159";
+	str[275] = "Tb-160";
+	str[276] = "Dy-156";
+	str[277] = "Dy-158";
+	str[278] = "Dy-160";
+	str[279] = "Dy-161";
+	str[280] = "Dy-162";
+	str[281] = "Dy-163";
+	str[282] = "Dy-164";
+	str[283] = "Ho-165";
+	str[284] = "Ho-166m";
+	str[285] = "Er-162";
+	str[286] = "Er-164";
+	str[287] = "Er-166";
+	str[288] = "Er-167";
+	str[289] = "Er-168";
+	str[290] = "Er-170";
+	str[291] = "Lu-175";
+	str[292] = "Lu-176";
+	str[293] = "Hf-174";
+	str[294] = "Hf-176";
+	str[295] = "Hf-177";
+	str[296] = "Hf-178";
+	str[297] = "Hf-179";
+	str[298] = "Hf-180";
+	str[299] = "Ta-181";
+	str[300] = "Ta-182";
+	str[301] = "W-182";
+	str[302] = "W-183";
+	str[303] = "W-184";
+	str[304] = "W-186";
+	str[305] = "Re-185";
+	str[306] = "Re-187";
+	str[307] = "Ir-191";
+	str[308] = "Ir-193";
+	str[309] = "Au-197";
+	str[310] = "Hg-196";
+	str[311] = "Hg-198";
+	str[312] = "Hg-199";
+	str[313] = "Hg-200";
+	str[314] = "Hg-201";
+	str[315] = "Hg-202";
+	str[316] = "Hg-204";
+	str[317] = "Pb-204";
+	str[318] = "Pb-206";
+	str[319] = "Pb-207";
+	str[320] = "Pb-208";
+	
 	int Large = 0;
 	// Reads in the number of assemblies to print
 	// Max is 241 (i.e., H-M model size)
@@ -31,12 +354,12 @@ int main(int argc, char * argv[])
 	else if( argc == 3 )
 	{
 		n_assemblies = atoi( argv[1] );
-		
+
 		if( n_assemblies < 1 )
 			n_assemblies = 1;
 		if( n_assemblies > 241 )
 			n_assemblies = 241;
-		
+
 		if( strcmp( "large", argv[2] ) == 0 || strcmp( "Large", argv[2] ) == 0 )
 			Large = 1;
 	}
@@ -52,7 +375,7 @@ int main(int argc, char * argv[])
 
 	// Generates tallies.xml input file
 	print_tallies_header();
-	print_tallies_single(Large);
+	print_tallies_single(Large, str);
 	print_tallies_footer();
 
 	if( Large == 0 )
@@ -63,11 +386,12 @@ int main(int argc, char * argv[])
 	return 0;
 }
 
-void print_tallies_single( int Large )
+void print_tallies_single( int Large, char * str[] )
 {
 	FILE * fp = fopen("tallies.xml", "a");
 	int tally = 1;
-	
+	int n_per_t = 33;
+
 	for( int i = 100; i < 100 + 2640 * n_assemblies; i++ )
 	{	
 		// H-M Small model (33 fuel nuclides)
@@ -80,22 +404,36 @@ void print_tallies_single( int Large )
 					"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
 					"</tally>\n",
 					tally++,i
-					);
+				   );
 		// H-M Large Model (321 fuel nuclides)
 		else
-			fprintf(fp,		
-					"<tally id=\"%d\">\n"
-					"<filter type=\"mesh\" bins=\"1\" />\n"
-					"<filter type=\"cell\" bins=\"%d\"/>\n"
-					"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
-					"<nuclides>U-234 U-235 U-236 U-238 O-16 Th-227 Th-228 Th-229 Th-230 Th-232 Th-233 Th-234 Pa-231 Pa-232 Pa-233 U-232 U-233 U-237 U-239 U-240 U-241 Np-235 Np-236 Np-237 Np-238 Np-239 Pu-236 Pu-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Pu-243 Pu-244 Pu-246 Am-241 Am-242 Am-242m Am-243 Am-244 Am-244m Cm-241 Cm-242 Cm-243 Cm-244 Cm-245 Cm-246 Cm-247 Cm-248 Cm-249 Cm-250 Bk-249 Bk-250 Cf-249 Cf-250 Cf-251 Cf-252 Cf-254 Es-254 Es-255 Fm-255 S-32 S-33 S-34 S-36 Cl-35 Cl-37 K-39 K-40 K-41 Ca-40 Ca-42 Ca-43 Ca-44 Ca-46 Ca-48 Sc-45 Ti-46 Ti-47 Ti-48 Ti-49 Ti-50 V-Nat Co-59 Zn-Nat Ga-69 Ga-71 Ge-70 Ge-72 Ge-73 Ge-74 Ge-76 As-74 As-75 Se-74 Se-76 Se-77 Se-78 Se-79 Se-80 Se-82 Br-79 Br-81 Kr-78 Kr-80 Kr-82 Kr-83 Kr-84 Kr-85 Kr-86 Rb-85 Rb-86 Rb-87 Sr-84 Sr-86 Sr-87 Sr-88 Sr-89 Sr-90 Y-89 Y-90 Y-91 Zr-93 Zr-95 Nb-93 Nb-94 Nb-95 Mo-99 Tc-99 Ru-96 Ru-98 Ru-99 Ru-100 Ru-101 Ru-102 Ru-103 Ru-104 Ru-105 Ru-106 Rh-103 Rh-105 Pd-102 Pd-104 Pd-105 Pd-106 Pd-107 Pd-108 Pd-110 Ag-107 Ag-109 Ag-110m Ag-111 Cd-106 Cd-108 Cd-110 Cd-111 Cd-112 Cd-113 Cd-114 Cd-115m Cd-116 In-113 In-115 Sn-112 Sn-113 Sn-114 Sn-115 Sn-116 Sn-117 Sn-118 Sn-119 Sn-120 Sn-122 Sn-123 Sn-124 Sn-125 Sn-126 Sb-121 Sb-123 Sb-124 Sb-125 Sb-126 Te-122 Te-123 Te-124 Te-125 Te-126 Te-127m Te-128 Te-129m Te-130 Te-132 I-127 I-129 I-130 I-131 I-135 Xe-123 Xe-124 Xe-126 Xe-128 Xe-129 Xe-130 Xe-131 Xe-132 Xe-133 Xe-134 Xe-135 Xe-136 Cs-133 Cs-134 Cs-135 Cs-136 Cs-137 Ba-130 Ba-132 Ba-133 Ba-134 Ba-135 Ba-136 Ba-137 Ba-138 Ba-140 La-138 La-139 La-140 Ce-136 Ce-138 Ce-139 Ce-140 Ce-141 Ce-142 Ce-143 Ce-144 Pr-141 Pr-142 Pr-143 Nd-142 Nd-143 Nd-144 Nd-145 Nd-146 Nd-147 Nd-148 Nd-150 Pm-147 Pm-148 Pm-148m Pm-149 Pm-151 Sm-147 Sm-148 Sm-149 Sm-150 Sm-151 Sm-152 Sm-153 Sm-154 Eu-151 Eu-152 Eu-153 Eu-154 Eu-155 Eu-156 Eu-157 Gd-152 Gd-153 Gd-154 Gd-155 Gd-156 Gd-157 Gd-158 Gd-160 Tb-159 Tb-160 Dy-156 Dy-158 Dy-160 Dy-161 Dy-162 Dy-163 Dy-164 Ho-165 Ho-166m Er-162 Er-164 Er-166 Er-167 Er-168 Er-170 Lu-175 Lu-176 Hf-174 Hf-176 Hf-177 Hf-178 Hf-179 Hf-180 Ta-181 Ta-182 W-182 W-183 W-184 W-186 Re-185 Re-187 Ir-191 Ir-193 Au-197 Hg-196 Hg-198 Hg-199 Hg-200 Hg-201 Hg-202 Hg-204 Pb-204 Pb-206 Pb-207 Pb-208</nuclides>\n"
-					"</tally>\n",
-					tally++,i
-					);
+		{
+			int printed = 0;
+			// outer loop prints variable number of tallies, based on nuclides per tally
+			for( int j = 0; j < 320 / n_per_t; j++ )
+			{
+				fprintf(fp,		
+						"<tally id=\"%d\">\n"
+						"<filter type=\"mesh\" bins=\"1\" />\n"
+						"<filter type=\"cell\" bins=\"%d\"/>\n"
+						"<scores>scatter nu-scatter absorption fission nu-fission kappa-fission</scores>\n"
+						"<nuclides>",
+						tally++,i
+					   );
+				// inner loop prints nuclides, based on nuclides per tally
+				for( int k = 0; k < n_per_t; k++ )
+					if( printed < 320 )
+						fprintf(fp,"%s ", str[printed++]);
+				fprintf(fp,		
+						"</nuclides>"
+						"</tally>\n"
+					   );
+			}
+		}
 	}
-	
+
 	fclose(fp);
-	
+
 	printf("printed %d tallies.\n", 2640 * n_assemblies);
 }	
 
@@ -358,11 +696,11 @@ void print_reactor( void )
 				print_assembly( ll_x + x * 21.42, ll_y + y * 21.42 );
 				assemblies_printed++;
 			}
-			
+
 			if( assemblies_printed == n_assemblies )
 				break;
 		}
-		
+
 		if( assemblies_printed == n_assemblies )
 			break;
 	}
@@ -434,38 +772,38 @@ void print_assembly( double c_x, double c_y )
 // XML reader is only capable of reading ~50 bins in a single filter.
 
 /*
-void print_tallies_multiline( void )
-{
-	FILE * fp = fopen("tallies.xml", "a");
-	fprintf(fp,		
-			"<tally id=\"1\">\n"
-			"<filter type=\"mesh\" bins=\"1\" />\n"
-			"<filter type=\"cell\" bins=\"\n"
-			);
-	if( SHORT_TALLY == 0 )
-		for( int i = 100; i < 636340; i++ )
-		{	
-			if( i % 5 == 0 && i != 100 )
-				fprintf(fp, "\n");
-			fprintf(fp, "%d ", i);
-		}
-	else
-		for( int i = 100; i < 2740; i++ )
-		{	
-			if( i % 5 == 0 && i != 100 )
-				fprintf(fp, "\n");
-			fprintf(fp, "%d ", i);
-		}
-	
-	fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
-	fprintf(fp,"</tally>\n");
-	
-	fclose(fp);
-	
-	if( SHORT_TALLY == 0 )
-		printf("printed 636240 tallies.\n");
-	else
-		printf("printed 2640 tallies.\n");
-	
-}
-*/
+   void print_tallies_multiline( void )
+   {
+   FILE * fp = fopen("tallies.xml", "a");
+   fprintf(fp,		
+   "<tally id=\"1\">\n"
+   "<filter type=\"mesh\" bins=\"1\" />\n"
+   "<filter type=\"cell\" bins=\"\n"
+   );
+   if( SHORT_TALLY == 0 )
+   for( int i = 100; i < 636340; i++ )
+   {	
+   if( i % 5 == 0 && i != 100 )
+   fprintf(fp, "\n");
+   fprintf(fp, "%d ", i);
+   }
+   else
+   for( int i = 100; i < 2740; i++ )
+   {	
+   if( i % 5 == 0 && i != 100 )
+   fprintf(fp, "\n");
+   fprintf(fp, "%d ", i);
+   }
+
+   fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
+   fprintf(fp,"</tally>\n");
+
+   fclose(fp);
+
+   if( SHORT_TALLY == 0 )
+   printf("printed 636240 tallies.\n");
+   else
+   printf("printed 2640 tallies.\n");
+
+   }
+ */
