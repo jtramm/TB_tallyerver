@@ -390,7 +390,7 @@ void print_tallies_single( int Large, char * str[] )
 {
 	FILE * fp = fopen("tallies.xml", "a");
 	int tally = 1;
-	int n_per_t = 33;
+	int n_per_t = 100;
 
 	for( int i = 100; i < 100 + 2640 * n_assemblies; i++ )
 	{	

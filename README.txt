@@ -108,7 +108,15 @@ Running TB_tallyserver Large--------------------------------------------------
 	           = 2,730 GB
 	           = 2.67  TB
 	
-	To run the Large model, launch TB Tallyserver with the following command:
+	To run the Large model, you will also need to update the materials.xml
+	file in your benchmark settings directory to accomodate the higher
+	number of nuclides. This can be done by compying the included
+	"materials_large.xml" file included with the program into the settings
+	directory, replacing the standard "materials.xml" file (note - you
+	should back up the original materials.xml file). 
+	
+	To generate the Large models filse, launch TB Tallyserver with the
+	following command:
 
 	>$ ./tb 241 Large
 
