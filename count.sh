@@ -7,3 +7,5 @@ echo cells =
 grep '<cell.*id' geometry.xml | wc -l
 echo surfaces = 
 grep '<surface.*id' geometry.xml | wc -l
+echo tallies = 
+grep '<tally.*id' tallies.xml | wc -l
