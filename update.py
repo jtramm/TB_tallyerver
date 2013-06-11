@@ -33,7 +33,7 @@ f.close()
 
 line = "#define NCELLS "+cells+"\n"
 contents.insert(0, line)
-line = "#define NSUFRACES "+surfaces+"\n"
+line = "#define NSURFACES "+surfaces+"\n"
 contents.insert(0, line)
 
 f = open(geometry_path, "w")
