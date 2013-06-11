@@ -70,6 +70,19 @@ Download----------------------------------------------------------------------
 
 	>$ cd TB_tallyserver
 
+Configuration-----------------------------------------------------------------
+
+	When you compile and run the tb.c code, it will automatically call a
+	script to update the relevant xml reader files. This script is the
+	"update.py" script. You will need to edit this cript to set the
+	absolute path to the openmc template subdirectory, as well as your
+	settings directory path. 
+
+	# Absolte path of the geometry_t.f90 and tallies_t.f90 files
+	geometry_path = '/home/jtramm/openmc/src/templates/geometry_t.f90'
+	tally_path    = '/home/jtramm/openmc/src/templates/tallies_t.f90'
+	settings_path = '/home/jtramm/openmc/settings'
+
 Compilation-------------------------------------------------------------------
 
 	To compile TB_tallyserver with default settings, use the following
@@ -124,59 +137,14 @@ Running TB_tallyserver Large--------------------------------------------------
 Updating OpenMC
 ==============================================================================
 
-You will need to replace the following files with the updated versions:
+The update.py script (launched automatically when running tb.c), will
+update several of the xml reader template files (without doing this, OpenMC
+would take weeks to read in the full geometry/tally files).
 
-	src/templates/geometry_t.f90
-	src/templates/tallies_t.f90
+Once you've run tb.c successfully, simply compile OpenMC.
 
-Note that you will also have to adjust these files based on the number
-of assemblies your geometry/tallies files specify. These numbers are
-gathered by running the included count.sh script. Also note that you
-should not move these files to their destination until all the below
-instructions have been completed.
-
-To run the count.sh script, you will get a printout like the following:
-
-	User@hostname:~/TB_tallyerver$ ./count.sh
-	cells =
-	636268
-	surfaces =
-	636257
-	tallies =
-	5726160
-
-With the above two sources of information, we can determine the values
-for the following three variables to be:
-
-NCELLS    = 636268
-NSURFACES = 636257
-NTALLIES  = 5726160
-
-You will then need to alter the geometry_t.f90 and tallies_t.f90 values
-accordingly.
-
-For geometry_t.f90, you will use the cells and surfaces variables we
-determined above. They can be #defined as follows:
-
-#define NCELLS    636268
-#define NSURFACES 636257
-
-For tallies_t.f90, you will use the NTALLIES variable we determined above.
-It can be #defined as follows:
-
-#define NTALLIES 5726160
-
-Once your files have been updated to reflect the desired values, follow
-the below procedure:
-
-1) From the src directory, build OpenMC normally:
-	>$ make distclean
-	>$ make
-2) Copy the above 2 files to their destinations in src/templates,
-   overwriting the files that are there.
-3) From the src directory, run make again:
-    >$ make
-4) Run OpenMC normally
+Note: If you do a "dist clean" in the OpenMC src directory, you will have
+to re-run tb.c to replace the updated files.
 
 ==============================================================================
 Theoretical Basis
