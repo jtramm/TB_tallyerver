@@ -1,4 +1,3 @@
-#define NTALLIES 636240
 
 module xml_data_tallies_t
    use READ_XML_PRIMITIVES

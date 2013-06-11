@@ -1,5 +1,3 @@
-#define NCELLS 636268
-#define NSURFACES 636257
 
 module xml_data_geometry_t
    use READ_XML_PRIMITIVES
