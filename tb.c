@@ -382,6 +382,10 @@ int main(int argc, char * argv[])
 		printf("H-M Small Benchmark\n");
 	else
 		printf("H-M Large Benchmark\n");
+	
+	// Run update python script
+	char * cmd = "python ./update.py";
+	system(cmd);
 
 	return 0;
 }
