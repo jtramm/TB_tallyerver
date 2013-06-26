@@ -5,7 +5,6 @@ import os
 
 # Absolte path of the geometry_t.f90 and tallies_t.f90 files
 templates_path = '/home/jtramm/openmc/tallyserver/openmc/src/templates'
-settings_path = '/home/jtramm/openmc/tallyserver/settings'
 
 # Calculate Number of Cells in Reactor Model Input Files
 cmd = "grep '<cell.*id' geometry.xml | wc -l"
@@ -65,13 +64,3 @@ if os.path.exists(templates_path+"/tallies_t.f90") :
 
 
 print "Updated xml reader files written to openmc/src/templates directory successfully"
-
-# Move xml files into settings directory
-source = 'geometry.xml'
-destination = settings_path+"/"+source
-shutil.copy2(source, destination)
-source = 'tallies.xml'
-destination = settings_path+"/"+source
-shutil.copy2(source, destination)
-
-print "Input files moved to settings folder"

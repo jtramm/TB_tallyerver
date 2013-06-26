@@ -512,7 +512,7 @@ void print_geom_header( void )
 			"  <cell id=\"12\" material=\"7\"  surfaces=\"5 -6 36 -38\" /> <!-- Top of radial reflector -->\n"
 			"\n"
 			"  <!-- Fuel pin, cladding, cold water -->\n"
-			"  <cell id=\"21\" universe=\"1\" material=\"1\" surfaces=\"-1\"   />\n"
+//			"  <cell id=\"21\" universe=\"1\" material=\"1\" surfaces=\"-1\"   />\n"
 			"  <cell id=\"22\" universe=\"1\" material=\"2\" surfaces=\"1 -2\" />\n"
 			"  <cell id=\"23\" universe=\"1\" material=\"3\" surfaces=\"2\"    />\n"
 			"\n"
@@ -522,7 +522,7 @@ void print_geom_header( void )
 			"  <cell id=\"26\" universe=\"2\" material=\"3\" surfaces=\"4\"    />\n"
 			"\n"
 			"  <!-- Fuel pin, cladding, hot water -->\n"
-			"  <cell id=\"27\" universe=\"3\" material=\"1\" surfaces=\"-1\"   />\n"
+//			"  <cell id=\"27\" universe=\"3\" material=\"1\" surfaces=\"-1\"   />\n"
 			"  <cell id=\"28\" universe=\"3\" material=\"2\" surfaces=\"1 -2\" />\n"
 			"  <cell id=\"29\" universe=\"3\" material=\"4\" surfaces=\"2\"    />\n"
 			"\n"
@@ -701,11 +701,11 @@ void print_reactor( void )
 				assemblies_printed++;
 			}
 
-			if( assemblies_printed == n_assemblies )
+			if( assemblies_printed == 241 )
 				break;
 		}
 
-		if( assemblies_printed == n_assemblies )
+		if( assemblies_printed == 241 )
 			break;
 	}
 

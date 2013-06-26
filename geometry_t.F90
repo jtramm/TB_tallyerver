@@ -703,9 +703,9 @@ subroutine read_xml_file_geometry_t(fname, lurep, errout)
    ! this is our troubled loop
    do
 
-		!if( surf_ctr + cell_ctr == 50000 ) then
-			!call EXIT(0)
-		!endif
+		if( surf_ctr + cell_ctr == 50000 ) then
+			write(6,*)"Surfs & Cells read in: ", surf_ctr+cell_ctr
+		endif
 
 
       call xml_get( info, tag, endtag, attribs, noattribs, data, nodata )
