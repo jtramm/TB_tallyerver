@@ -74,14 +74,12 @@ Configuration-----------------------------------------------------------------
 
 	When you compile and run the tb.c code, it will automatically call a
 	script to update the relevant xml reader files. This script is the
-	"update.py" script. You will need to edit this cript to set the
+	"update.py" script. You will need to edit this script to set the
 	absolute path to the openmc template subdirectory, as well as your
 	settings directory path. 
 
-	# Absolte path of the geometry_t.f90 and tallies_t.f90 files
-	geometry_path = '/home/jtramm/openmc/src/templates/geometry_t.f90'
-	tally_path    = '/home/jtramm/openmc/src/templates/tallies_t.f90'
-	settings_path = '/home/jtramm/openmc/settings'
+	# Absolte path of templates directory
+	templates_path = '/home/jtramm/openmc/src/templates'
 
 Compilation-------------------------------------------------------------------
 
