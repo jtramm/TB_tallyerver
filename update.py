@@ -4,7 +4,10 @@ import shutil
 import os
 
 # Absolte path of the geometry_t.f90 and tallies_t.f90 files
-templates_path = '/home/jtramm/openmc/tallyserver/openmc/src/templates'
+templates_path = '/home/jtramm/openmc/src/templates'
+
+# Sets the size of the H-M Benchmark
+HMSize = 'small'
 
 # Calculate Number of Cells in Reactor Model Input Files
 cmd = "grep '<cell.*id' geometry.xml | wc -l"
@@ -25,16 +28,16 @@ lines = num.split('\n')
 tallies = lines[0]
 
 # Update geometry File
-f = open("geometry_t.F90", "r")
+f = open("geometry_t.f90", "r")
 contents = f.readlines()
 f.close()
 
-line = "#define NCELLS "+cells+"\n"
-contents.insert(0, line)
-line = "#define NSURFACES "+surfaces+"\n"
-contents.insert(0, line)
+line = "   allocate(cell_("+cells+"))\n"
+contents.insert(665, line)
+line = "   allocate(surface_("+surfaces+"))\n"
+contents.insert(667, line)
 
-f = open(templates_path+"/geometry_t.F90", "w")
+f = open(templates_path+"/geometry_t.f90", "w")
 contents = "".join(contents)
 f.write(contents)
 f.close()
@@ -42,25 +45,32 @@ f.close()
 
 # Update tally File
 
-f = open("tallies_t.F90", "r")
+f = open("tallies_t.f90", "r")
 contents = f.readlines()
 f.close()
 
-line = "#define NTALLIES "+tallies+"\n"
-contents.insert(0, line)
+line = "   allocate(tally_("+tallies+"))\n"
+contents.insert(650, line)
 
-f = open(templates_path+"/tallies_t.F90", "w")
+f = open(templates_path+"/tallies_t.f90", "w")
 contents = "".join(contents)
 f.write(contents)
 f.close()
 
 # Delete old .f90 extensions (.F90 is required for preprocessor to work)
 
-if os.path.exists(templates_path+"/geometry_t.f90") :
-	os.remove(templates_path+"/geometry_t.f90")
+#if os.path.exists(templates_path+"/geometry_t.f90") :
+#	os.remove(templates_path+"/geometry_t.f90")
 
-if os.path.exists(templates_path+"/tallies_t.f90") :
-	os.remove(templates_path+"/tallies_t.f90")
-
+#if os.path.exists(templates_path+"/tallies_t.f90") :
+#	os.remove(templates_path+"/tallies_t.f90")
 
 print "Updated xml reader files written to openmc/src/templates directory successfully"
+
+# Figures out which materials file to use
+
+if HMSize == 'small' :
+	shutil.copy2('materials_small.xml', 'materials.xml')
+else :
+	shutil.copy2('materials_large.xml', 'materials.xml')
+

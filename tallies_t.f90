@@ -648,7 +648,7 @@ subroutine read_xml_file_tallies_t(fname, lurep, errout)
    allocate(mesh_(0))
    has_tally_                           = .false.
    ! here's where we have our initial allocation JRT
-   allocate(tally_(NTALLIES))
+   !allocate(tally_(NTALLIES))
    has_separate_                        = .false.
 
 	jrt_size = 0;

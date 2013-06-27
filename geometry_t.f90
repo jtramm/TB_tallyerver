@@ -1,4 +1,3 @@
-
 module xml_data_geometry_t
    use READ_XML_PRIMITIVES
    use WRITE_XML_PRIMITIVES
@@ -34,13 +33,13 @@ type lattice_xml
    real(kind=kind(1.0d0)), dimension(:), pointer   :: lower_left => null()
    real(kind=kind(1.0d0)), dimension(:), pointer   :: width => null()
    integer, dimension(:), pointer                  :: universes => null()
+   integer                                         :: outside
 end type lattice_xml
    type(cell_xml), dimension(:), pointer           :: cell_ => null()
    type(surface_xml), dimension(:), pointer        :: surface_ => null()
    type(lattice_xml), dimension(:), pointer        :: lattice_ => null()
 contains
 
-! This one and the surface one are the real hogs
 subroutine read_xml_type_cell_xml_array( &
       info, tag, endtag, attribs, noattribs, data, nodata, &
       dvar, has_dvar )
@@ -56,25 +55,16 @@ subroutine read_xml_type_cell_xml_array( &
 
    integer                                      :: newsize
    type(cell_xml), dimension(:), pointer :: newvar
-	
-	jrt_cell_size = jrt_cell_size + 1
-	
-!	   newsize = size(dvar) + 1
-	   
-!	if( jrtsize > newsize ) then
 
-!	   allocate( newvar(1:newsize+1000) )
-!	   newvar(1:newsize-1000) = dvar
-!	   deallocate( dvar )
-!	   dvar => newvar
-	
-!	endif
-
-
-
+  jrt_cell_size = jrt_cell_size + 1
+!   newsize = size(dvar) + 1
+!   allocate( newvar(1:newsize) )
+!   newvar(1:newsize-1) = dvar
+!   deallocate( dvar )
+!   dvar => newvar
 
    call read_xml_type_cell_xml( info, tag, endtag, attribs, noattribs, data, nodata, &
-              dvar(jrt_cell_size), has_dvar )
+              dvar(newsize), has_dvar )
 end subroutine read_xml_type_cell_xml_array
 
 subroutine read_xml_type_cell_xml( info, starttag, endtag, attribs, noattribs, data, nodata, &
@@ -128,14 +118,14 @@ subroutine read_xml_type_cell_xml( info, starttag, endtag, attribs, noattribs, d
             endtag    = .false.
          else
             tag       = starttag
-            noattribs = 0
+            noattribs = 0 
             nodata    = 0
             endtag    = .true.
             cycle
          endif
       else
          if ( endtag_org ) then
-            return
+
          else
             call xml_get( info, tag, endtag, attribs, noattribs, data, nodata )
             if ( xml_error(info) ) then
@@ -275,16 +265,16 @@ subroutine read_xml_type_surface_xml_array( &
    integer                                      :: newsize
    type(surface_xml), dimension(:), pointer :: newvar
 
-   jrt_surf_size = jrt_surf_size + 1
-   
-   !newsize = size(dvar) + 1
-   !allocate( newvar(1:newsize) )
-   !newvar(1:newsize-1) = dvar
-   !deallocate( dvar )
-   !dvar => newvar
+
+	jrt_surf_size = jrt_surf_size + 1
+!   newsize = size(dvar) + 1
+!   allocate( newvar(1:newsize) )
+!   newvar(1:newsize-1) = dvar
+!   deallocate( dvar )
+!   dvar => newvar
 
    call read_xml_type_surface_xml( info, tag, endtag, attribs, noattribs, data, nodata, &
-              dvar(jrt_surf_size), has_dvar )
+              dvar(newsize), has_dvar )
 end subroutine read_xml_type_surface_xml_array
 
 subroutine read_xml_type_surface_xml( info, starttag, endtag, attribs, noattribs, data, nodata, &
@@ -491,12 +481,14 @@ subroutine read_xml_type_lattice_xml( info, starttag, endtag, attribs, noattribs
    logical                                         :: has_lower_left
    logical                                         :: has_width
    logical                                         :: has_universes
+   logical                                         :: has_outside
    has_id                               = .false.
    has_type                             = .false.
    has_dimension                        = .false.
    has_lower_left                       = .false.
    has_width                            = .false.
    has_universes                        = .false.
+   has_outside                          = .false.
    call init_xml_type_lattice_xml(dvar)
    has_dvar = .true.
    error  = .false.
@@ -569,6 +561,10 @@ subroutine read_xml_type_lattice_xml( info, starttag, endtag, attribs, noattribs
          call read_xml_integer_array( &
             info, tag, endtag, attribs, noattribs, data, nodata, &
             dvar%universes, has_universes )
+      case('outside')
+         call read_xml_integer( &
+            info, tag, endtag, attribs, noattribs, data, nodata, &
+            dvar%outside, has_outside )
       case ('comment', '!--')
          ! Simply ignore
       case default
@@ -612,6 +608,7 @@ end subroutine init_xml_type_lattice_xml_array
 subroutine init_xml_type_lattice_xml(dvar)
    type(lattice_xml) :: dvar
    dvar%type = 'rectangular'
+   dvar%outside = 0
 end subroutine init_xml_type_lattice_xml
 subroutine write_xml_type_lattice_xml_array( &
       info, tag, indent, dvar )
@@ -641,6 +638,7 @@ subroutine write_xml_type_lattice_xml( &
    call write_to_xml_double_array( info, 'lower_left', indent+3, dvar%lower_left)
    call write_to_xml_double_array( info, 'width', indent+3, dvar%width)
    call write_to_xml_integer_array( info, 'universes', indent+3, dvar%universes)
+   call write_to_xml_integer( info, 'outside', indent+3, dvar%outside)
    write(info%lun,'(4a)') indentation(1:min(indent,100)), &
        '</' //trim(tag) // '>'
 end subroutine write_xml_type_lattice_xml
@@ -665,13 +663,12 @@ subroutine read_xml_file_geometry_t(fname, lurep, errout)
    logical                                         :: has_surface_
    logical                                         :: has_lattice_
    has_cell_                            = .false.
-   ! upped this to be huge
-   allocate(cell_(NCELLS))
+   !allocate(cell_(0))
    has_surface_                         = .false.
-   allocate(surface_(NSURFACES))
+   !allocate(surface_(0))
    has_lattice_                         = .false.
    allocate(lattice_(0))
-
+   
    surf_ctr = 0
    cell_ctr = 0
 
@@ -697,17 +694,12 @@ subroutine read_xml_file_geometry_t(fname, lurep, errout)
    endif
    strict_ = .false.
    error = .false.
-   
    jrt_cell_size = 0
    jrt_surf_size = 0
-   ! this is our troubled loop
    do
-
-		if( surf_ctr + cell_ctr == 50000 ) then
+		if( MOD(surf_ctr + cell_ctr,5000) == 0  ) then
 			write(6,*)"Surfs & Cells read in: ", surf_ctr+cell_ctr
 		endif
-
-
       call xml_get( info, tag, endtag, attribs, noattribs, data, nodata )
       if ( xml_error(info) ) then
          write(lurep_,*) 'Error reading input file!'
@@ -726,12 +718,12 @@ subroutine read_xml_file_geometry_t(fname, lurep, errout)
       endif
       select case( tag )
       case('cell')
-	  	 cell_ctr = cell_ctr + 1
+	     cell_ctr = cell_ctr + 1
          call read_xml_type_cell_xml_array( &
             info, tag, endtag, attribs, noattribs, data, nodata, &
             cell_, has_cell_ )
       case('surface')
-	     surf_ctr = surf_ctr + 1
+	     surf_ctr = surf_ctr 
          call read_xml_type_surface_xml_array( &
             info, tag, endtag, attribs, noattribs, data, nodata, &
             surface_, has_surface_ )
