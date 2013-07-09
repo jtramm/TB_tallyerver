@@ -4,7 +4,7 @@ import shutil
 import os
 
 # Absolte path of the geometry_t.f90 and tallies_t.f90 files
-templates_path = '/home/jtramm/openmc/src/templates'
+templates_path = '../templates'
 
 # Sets the size of the H-M Benchmark
 HMSize = 'small'

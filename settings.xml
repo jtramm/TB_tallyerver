@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <settings>
-<cross_sections>/home/jtramm/openmc/data/cross_sections.xml</cross_sections>
+<cross_sections>/home/jtramm/data/cross_sections.xml</cross_sections>
 <servers>2</servers>
   <eigenvalue>
     <batches>20</batches>
