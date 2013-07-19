@@ -375,7 +375,8 @@ int main(int argc, char * argv[])
 
 	// Generates tallies.xml input file
 	print_tallies_header();
-	print_tallies_single(Large, str);
+	//print_tallies_single(Large, str);
+	print_tallies_multiline();
 	print_tallies_footer();
 
 	if( Large == 0 )
@@ -384,8 +385,8 @@ int main(int argc, char * argv[])
 		printf("H-M Large Benchmark\n");
 	
 	// Run update python script
-	char * cmd = "python ./update.py";
-	system(cmd);
+	//char * cmd = "python ./update.py";
+	//system(cmd);
 
 	return 0;
 }
@@ -775,39 +776,33 @@ void print_assembly( double c_x, double c_y )
 // but was found not to actually work with the current XML reader. The
 // XML reader is only capable of reading ~50 bins in a single filter.
 
-/*
-   void print_tallies_multiline( void )
-   {
-   FILE * fp = fopen("tallies.xml", "a");
-   fprintf(fp,		
-   "<tally id=\"1\">\n"
-   "<filter type=\"mesh\" bins=\"1\" />\n"
-   "<filter type=\"cell\" bins=\"\n"
-   );
-   if( SHORT_TALLY == 0 )
-   for( int i = 100; i < 636340; i++ )
-   {	
-   if( i % 5 == 0 && i != 100 )
-   fprintf(fp, "\n");
-   fprintf(fp, "%d ", i);
-   }
-   else
-   for( int i = 100; i < 2740; i++ )
-   {	
-   if( i % 5 == 0 && i != 100 )
-   fprintf(fp, "\n");
-   fprintf(fp, "%d ", i);
-   }
+void print_tallies_multiline( void )
+{
+	int i;
+	FILE * fp = fopen("tallies.xml", "a");
+	fprintf(fp,		
+			"<tally id=\"1\">\n"
+			"<filter type=\"mesh\" bins=\"1\" />\n"
+			"<filter>\n"
+			"<type>cell</type>\n"
+			"<bins>\n"
+		   );
+	for( i = 100; i < 100 + 2640 * n_assemblies; i++ )
+	{	
+		if( i % 5 == 0 && i != 100 )
+			fprintf(fp, "\n");
+		fprintf(fp, "%d ", i);
+	}
+	fprintf(fp,
+	        "\n</bins>\n"
+			"</filter>\n"
+			"<scores> scatter nu-scatter absorption fission nu-fission kappa-fission </scores>\n"
+            "<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
+			"</tally>\n"
+			);
 
-   fprintf(fp, "\"/>\n<scores>nu-fission</scores>\n");
-   fprintf(fp,"</tally>\n");
+	fclose(fp);
 
-   fclose(fp);
+	printf("printed %d tallies.\n", i - 100);
 
-   if( SHORT_TALLY == 0 )
-   printf("printed 636240 tallies.\n");
-   else
-   printf("printed 2640 tallies.\n");
-
-   }
- */
+}
