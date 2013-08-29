@@ -778,31 +778,37 @@ void print_assembly( double c_x, double c_y )
 
 void print_tallies_multiline( void )
 {
-	int i;
+	int i,j,k;
 	FILE * fp = fopen("tallies.xml", "a");
-	fprintf(fp,		
-			"<tally id=\"1\">\n"
-			"<filter type=\"mesh\" bins=\"1\" />\n"
-			"<filter>\n"
-			"<type>cell</type>\n"
-			"<bins>\n"
-		   );
-	for( i = 100; i < 100 + 2640 * n_assemblies; i++ )
-	{	
-		if( i % 5 == 0 && i != 100 )
-			fprintf(fp, "\n");
-		fprintf(fp, "%d ", i);
-	}
-	fprintf(fp,
-	        "\n</bins>\n"
-			"</filter>\n"
-			"<scores> scatter nu-scatter absorption fission nu-fission kappa-fission </scores>\n"
-            "<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
-			"</tally>\n"
-			);
 
+	for( j = 100, k = 1; j < 100 + 2640 * n_assemblies; )
+	{
+		fprintf(fp,		
+				"<tally id=\"%d\">\n"
+				"<filter type=\"mesh\" bins=\"1\" />\n"
+				"<filter>\n"
+				"<type>cell</type>\n"
+				"<bins>\n",k++
+			   );
+		// This version is for only 1k bins per tally object
+		//for( i = 0; i < 1000 && j < 100 + 2640 * n_assemblies; i++ )
+		for( i = 0; j < 100 + 2640 * n_assemblies; i++ )
+		{	
+			if( i % 5 == 0 && i != 0 )
+				fprintf(fp, "\n");
+			fprintf(fp, "%d ", j);
+			j++;
+		}
+		fprintf(fp,
+				"\n</bins>\n"
+				"</filter>\n"
+				"<scores> scatter absorption fission nu-fission kappa-fission </scores>\n"
+				"<nuclides>U-234 U-235 U-236 U-238 Np-237 Pu-238 Pu-239 Pu-240 Pu-241 Pu-242 Am-241 Am-242m Am-243 Cm-242 Cm-244 Mo-95 Tc-99 Ru-101 Ru-103 Ag-109 Xe-135 Cs-133 Nd-143 Nd-145 Sm-147 Sm-149 Sm-150 Sm-151 Sm-152 Eu-153 Gd-155 O-16</nuclides>\n"
+				"</tally>\n"
+			   );
+	}
 	fclose(fp);
 
-	printf("printed %d tallies.\n", i - 100);
+	printf("printed %d tallies.\n", j - 100);
 
 }
